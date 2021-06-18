@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  
+  
+  
+  <entry>
+    <title>test_my_site</title>
+    <link href="/2021/06/10/test-my-site/"/>
+    <url>/2021/06/10/test-my-site/</url>
+    
+    <content type="html"><![CDATA[<h1 id="This-is-a-test-page"><a href="#This-is-a-test-page" class="headerlink" title="This is a test page"></a>This is a test page</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">getFileList</span>(<span class="hljs-params"><span class="hljs-built_in">dir</span>, Filelist, ext=<span class="hljs-literal">None</span></span>):</span><br>    <span class="hljs-keyword">import</span> os<br>    <span class="hljs-string">&quot;&quot;&quot;</span><br><span class="hljs-string">    给一个指定路径，获取文件夹及其子文件夹中文件列表</span><br><span class="hljs-string">    输入 dir：文件夹根目录</span><br><span class="hljs-string">    输入 ext: 扩展名</span><br><span class="hljs-string">    返回： 文件路径列表</span><br><span class="hljs-string">    &quot;&quot;&quot;</span><br>    newDir = <span class="hljs-built_in">dir</span><br>    <span class="hljs-keyword">if</span> os.path.isfile(<span class="hljs-built_in">dir</span>):<br>        <span class="hljs-keyword">if</span> ext <span class="hljs-keyword">is</span> <span class="hljs-literal">None</span>:<br>            Filelist.append(<span class="hljs-built_in">dir</span>)<br>        <span class="hljs-keyword">else</span>:<br>            <span class="hljs-keyword">if</span> ext <span class="hljs-keyword">in</span> <span class="hljs-built_in">dir</span>[-<span class="hljs-number">3</span>:]:<br>                Filelist.append(<span class="hljs-built_in">dir</span>)<br><br>    <span class="hljs-keyword">elif</span> os.path.isdir(<span class="hljs-built_in">dir</span>):<br>        <span class="hljs-keyword">for</span> s <span class="hljs-keyword">in</span> os.listdir(<span class="hljs-built_in">dir</span>):<br>            newDir = os.path.join(<span class="hljs-built_in">dir</span>, s)<br>            getFileList(newDir, Filelist, ext)<br><br>    <span class="hljs-keyword">return</span> Filelist<br><br></code></pre></td></tr></table></figure>]]></content>
+    
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>Hello World</title>
+    <link href="/2021/06/10/hello-world/"/>
+    <url>/2021/06/10/hello-world/</url>
+    
+    <content type="html"><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p><h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ hexo new <span class="hljs-string">&quot;My New Post&quot;</span><br></code></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p><h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ hexo server<br></code></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p><h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ hexo generate<br></code></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p><h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ hexo deploy<br></code></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>]]></content>
+    
+    
+    
+  </entry>
+  
+  
+  
+  
+</search>
