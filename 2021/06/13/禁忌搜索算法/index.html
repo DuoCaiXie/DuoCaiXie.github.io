@@ -1,0 +1,528 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+  <title>禁忌搜索算法 - Hexo</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.7.2/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.11","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":"a8d519dd5b8eab3da599e5e777a7e2e2","google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"oTz5xQKcW335cD9aw4fhsx6K-gzGzoHsz","app_key":"0ndGTdc6KhxnGmx1PTc4A4Yb","server_url":"https://otz5xqkc.lc-cn-n1-shared.com"}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>竹子的Blog</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="禁忌搜索算法">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2021-06-13 19:32" pubdate>
+        2021年6月13日 晚上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      1.7k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      23
+       分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- LeanCloud 统计文章PV -->
+      <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="leancloud-page-views"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">禁忌搜索算法</h1>
+            
+            <div class="markdown-body">
+              <h2 id="1-思想"><a href="#1-思想" class="headerlink" title="1.思想"></a>1.思想</h2><p>禁忌搜索(<strong>Tabu Search，TS</strong>),是一种全局性邻域搜索算法，模拟人类具有记忆功能的寻优特征。它通过局部邻域搜索机制和相应的禁忌准则来避免迂回搜索，<br>并通过破禁水平来释放一些被禁忌的优良状态，进而保证多样化的有效探索，以最终实现全局优化。</p>
+<h2 id="2-流程图"><a href="#2-流程图" class="headerlink" title="2.流程图"></a>2.流程图</h2><img src="http://quw0uiom6.hd-bkt.clouddn.com/%E7%A6%81%E5%BF%8C%E6%90%9C%E7%B4%A2%E7%AE%97%E6%B3%95%E6%B5%81%E7%A8%8B%E5%9B%BE.png" srcset="/img/loading.gif" lazyload style="zoom:50%;" />
+
+
+
+<h2 id="3-解决TSP问题"><a href="#3-解决TSP问题" class="headerlink" title="3.解决TSP问题"></a>3.解决TSP问题</h2><figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br></pre></td><td class="code"><pre><code class="hljs matlab"><span class="hljs-comment">%% 一个旅行商人要拜访全国31个省会城市，且每个城市只能拜访一次，求所有路径之中的最小值</span><br><span class="hljs-comment">% 禁忌搜索算法求解TSP问题</span><br><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">[BestShortcut,theMinDistance]</span>=<span class="hljs-title">TabuSearch</span></span><br>clear;<br>clc;<br><span class="hljs-comment">% 全国31个省会城市坐标</span><br>Clist=[<span class="hljs-number">1304</span> <span class="hljs-number">2312</span>;<span class="hljs-number">3639</span> <span class="hljs-number">1315</span>;<span class="hljs-number">4177</span> <span class="hljs-number">2244</span>;<span class="hljs-number">3712</span> <span class="hljs-number">1399</span>;<span class="hljs-number">3488</span> <span class="hljs-number">1535</span>;<span class="hljs-number">3326</span> <span class="hljs-number">1556</span>;<span class="hljs-number">3238</span> <span class="hljs-number">1229</span>;...<br>    <span class="hljs-number">4196</span> <span class="hljs-number">1044</span>;<span class="hljs-number">4312</span>  <span class="hljs-number">790</span>;<span class="hljs-number">4386</span>  <span class="hljs-number">570</span>;<span class="hljs-number">3007</span> <span class="hljs-number">1970</span>;<span class="hljs-number">2562</span> <span class="hljs-number">1756</span>;<span class="hljs-number">2788</span> <span class="hljs-number">1491</span>;<span class="hljs-number">2381</span> <span class="hljs-number">1676</span>;...<br>    <span class="hljs-number">1332</span>  <span class="hljs-number">695</span>;<span class="hljs-number">3715</span> <span class="hljs-number">1678</span>;<span class="hljs-number">3918</span> <span class="hljs-number">2179</span>;<span class="hljs-number">4061</span> <span class="hljs-number">2370</span>;<span class="hljs-number">3780</span> <span class="hljs-number">2212</span>;<span class="hljs-number">3676</span> <span class="hljs-number">2578</span>;<span class="hljs-number">4029</span> <span class="hljs-number">2838</span>;...<br>    <span class="hljs-number">4263</span> <span class="hljs-number">2931</span>;<span class="hljs-number">3429</span> <span class="hljs-number">1908</span>;<span class="hljs-number">3507</span> <span class="hljs-number">2376</span>;<span class="hljs-number">3394</span> <span class="hljs-number">2643</span>;<span class="hljs-number">3439</span> <span class="hljs-number">3201</span>;<span class="hljs-number">2935</span> <span class="hljs-number">3240</span>;<span class="hljs-number">3140</span> <span class="hljs-number">3550</span>;...<br>    <span class="hljs-number">2545</span> <span class="hljs-number">2357</span>;<span class="hljs-number">2778</span> <span class="hljs-number">2826</span>;<span class="hljs-number">2370</span> <span class="hljs-number">2975</span>];<br><br><span class="hljs-comment">%% 计算距离矩阵</span><br>CityNum=<span class="hljs-built_in">size</span>(Clist,<span class="hljs-number">1</span>); <span class="hljs-comment">% TSP问题的规模,即城市数目</span><br>dislist=<span class="hljs-built_in">zeros</span>(CityNum);<br><span class="hljs-keyword">for</span> <span class="hljs-built_in">i</span>=<span class="hljs-number">1</span>:CityNum<br>    <span class="hljs-keyword">for</span> <span class="hljs-built_in">j</span>=<span class="hljs-number">1</span>:CityNum<br>        dislist(<span class="hljs-built_in">i</span>,<span class="hljs-built_in">j</span>)=((Clist(<span class="hljs-built_in">i</span>,<span class="hljs-number">1</span>)-Clist(<span class="hljs-built_in">j</span>,<span class="hljs-number">1</span>))^<span class="hljs-number">2</span>+(Clist(<span class="hljs-built_in">i</span>,<span class="hljs-number">2</span>)-Clist(<span class="hljs-built_in">j</span>,<span class="hljs-number">2</span>))^<span class="hljs-number">2</span>)^<span class="hljs-number">0.5</span>;<br>    <span class="hljs-keyword">end</span><br><span class="hljs-keyword">end</span><br><span class="hljs-comment">%% 定义属性</span><br>TabuList=<span class="hljs-built_in">zeros</span>(CityNum);                      <span class="hljs-comment">% 禁忌表设置为所有城市互换对，初始禁忌长度都为0，即禁忌表为空</span><br>TabuLength=<span class="hljs-built_in">round</span>((CityNum*(CityNum<span class="hljs-number">-1</span>)/<span class="hljs-number">2</span>)^<span class="hljs-number">0.5</span>);<span class="hljs-comment">% 禁忌表长度(tabu length)，设置为二领域个数的开方，round四舍五入</span><br>CandidatesNum=<span class="hljs-number">200</span>;                            <span class="hljs-comment">% 领域集的个数 (全部二领域解个数太多，我们随机选取200个)，由这些领域解中选出候选解</span><br>Candidates=<span class="hljs-built_in">zeros</span>(CandidatesNum,CityNum);      <span class="hljs-comment">% 选取的领域解集合，每一行代表一个领域解，由这些领域解中选出候选解</span><br>S0=randperm(CityNum);                         <span class="hljs-comment">% 随机产生初始解，返回一行1到CityNum的整数数组</span><br>BSF=S0;                                       <span class="hljs-comment">% 当前最佳路径</span><br>BestL=Inf;                                    <span class="hljs-comment">% 当前最佳解距离，inf为极大值</span><br>p=<span class="hljs-number">1</span>;                                          <span class="hljs-comment">% 记录迭代次数</span><br>StopL=<span class="hljs-number">1000</span>;                                   <span class="hljs-comment">% 最大迭代次数</span><br><span class="hljs-comment">%% 用户控制界面</span><br><span class="hljs-built_in">figure</span>(<span class="hljs-number">1</span>);<br>stop = uicontrol(<span class="hljs-string">&#x27;style&#x27;</span>,<span class="hljs-string">&#x27;toggle&#x27;</span>,<span class="hljs-string">&#x27;string&#x27;</span>...<br>    ,<span class="hljs-string">&#x27;stop&#x27;</span>,<span class="hljs-string">&#x27;background&#x27;</span>,<span class="hljs-string">&#x27;white&#x27;</span>);<br>tic;                                          <span class="hljs-comment">% 用来保存当前时间</span><br><span class="hljs-comment">%% 禁忌搜索循环</span><br><span class="hljs-keyword">while</span> p&lt;StopL<br>    <span class="hljs-keyword">if</span> CandidatesNum&gt;CityNum*(CityNum<span class="hljs-number">-1</span>)/<span class="hljs-number">2</span><br>        <span class="hljs-built_in">disp</span>(<span class="hljs-string">&#x27;领域解个数不大于n*(n-1)/2!&#x27;</span>);<br>        <span class="hljs-keyword">break</span>;<br>    <span class="hljs-keyword">end</span><br>    <br>    ALong(p)=DistanceOfS(dislist,S0);       <span class="hljs-comment">% 当前解适配值，也就是当前路径的长度</span><br>    <br>    <span class="hljs-comment">%% 以下while循环生成随机的[200,2]的矩阵A,每一个元素都是在1-31之间的</span><br>    <span class="hljs-comment">% 用于后面为当前解生成邻域解</span><br>    <span class="hljs-built_in">i</span>=<span class="hljs-number">1</span>;<br>    A=<span class="hljs-built_in">zeros</span>(CandidatesNum,<span class="hljs-number">2</span>);       <span class="hljs-comment">% 解中交换的城市矩阵</span><br>    <span class="hljs-keyword">while</span> <span class="hljs-built_in">i</span>&lt;=CandidatesNum<br>        M=CityNum*<span class="hljs-built_in">rand</span>(<span class="hljs-number">1</span>,<span class="hljs-number">2</span>); <br>        M=<span class="hljs-built_in">ceil</span>(M);                  <span class="hljs-comment">% 返回一行两列数值为 1-CityNum 之间的数组</span><br>        <span class="hljs-comment">%【1-----------------------------</span><br>        <span class="hljs-keyword">if</span> M(<span class="hljs-number">1</span>)~=M(<span class="hljs-number">2</span>)<br>            A(<span class="hljs-built_in">i</span>,<span class="hljs-number">1</span>)=<span class="hljs-built_in">max</span>(M(<span class="hljs-number">1</span>),M(<span class="hljs-number">2</span>));<br>            A(<span class="hljs-built_in">i</span>,<span class="hljs-number">2</span>)=<span class="hljs-built_in">min</span>(M(<span class="hljs-number">1</span>),M(<span class="hljs-number">2</span>));<br>            <span class="hljs-comment">%【2-------------------------</span><br>            <span class="hljs-keyword">if</span> <span class="hljs-built_in">i</span>==<span class="hljs-number">1</span><br>                isa=<span class="hljs-number">0</span>;<br>            <span class="hljs-keyword">else</span><br>                <span class="hljs-comment">%【3---------------------</span><br>                <span class="hljs-comment">% 判断是否生成相同的交换城市组，如果是，重新生成</span><br>                <span class="hljs-keyword">for</span> <span class="hljs-built_in">j</span>=<span class="hljs-number">1</span>:<span class="hljs-built_in">i</span><span class="hljs-number">-1</span><br>                    <span class="hljs-keyword">if</span> A(<span class="hljs-built_in">i</span>,<span class="hljs-number">1</span>)==A(<span class="hljs-built_in">j</span>,<span class="hljs-number">1</span>) &amp;&amp; A(<span class="hljs-built_in">i</span>,<span class="hljs-number">2</span>)==A(<span class="hljs-built_in">j</span>,<span class="hljs-number">2</span>)<br>                        isa=<span class="hljs-number">1</span>;<br>                        <span class="hljs-keyword">break</span>;<br>                    <span class="hljs-keyword">else</span><br>                        isa=<span class="hljs-number">0</span>;<br>                    <span class="hljs-keyword">end</span><br>                <span class="hljs-keyword">end</span><br>                <span class="hljs-comment">%3】---------------------</span><br>            <span class="hljs-keyword">end</span><br>            <span class="hljs-comment">%2】-------------------------</span><br>            <span class="hljs-comment">%【4---------</span><br>            <span class="hljs-keyword">if</span> ~isa<br>                <span class="hljs-built_in">i</span>=<span class="hljs-built_in">i</span>+<span class="hljs-number">1</span>;<br>            <span class="hljs-keyword">end</span><br>            <span class="hljs-comment">%4】---------</span><br>        <span class="hljs-keyword">end</span><br>        <span class="hljs-comment">%1】-----------------------------</span><br>    <span class="hljs-keyword">end</span><br>    <span class="hljs-comment">%% 产生领域解，选取前100个为确定候选解</span><br>    <span class="hljs-comment">% 保留前BestCandidateNum个最好领域解作为候选解</span><br>    BestCandidateNum=<span class="hljs-number">100</span>;<br>    <span class="hljs-comment">% 四列，分别存数i、路径长度、交换城市A(i,1)、交换城市A(i,2)</span><br>    BestCandidate=Inf*<span class="hljs-built_in">ones</span>(BestCandidateNum,<span class="hljs-number">4</span>); <br>    F=<span class="hljs-built_in">zeros</span>(<span class="hljs-number">1</span>,CandidatesNum);<br>    <br>    <span class="hljs-comment">% 这相当于是产生一个S0的邻域...包含CandidatesNum个领域解，最后选出的BestCandidate才是候选解</span><br>    <span class="hljs-keyword">for</span> <span class="hljs-built_in">i</span>=<span class="hljs-number">1</span>:CandidatesNum<br>        Candidates(<span class="hljs-built_in">i</span>,:)=S0;  <span class="hljs-comment">% 领域解集合</span><br>        Candidates(<span class="hljs-built_in">i</span>,[A(<span class="hljs-built_in">i</span>,<span class="hljs-number">2</span>),A(<span class="hljs-built_in">i</span>,<span class="hljs-number">1</span>)])=S0([A(<span class="hljs-built_in">i</span>,<span class="hljs-number">1</span>),A(<span class="hljs-built_in">i</span>,<span class="hljs-number">2</span>)]);<br>        <span class="hljs-comment">% 计算当前解适配值，也就是当前路径的长度</span><br>        F(<span class="hljs-built_in">i</span>)=DistanceOfS(dislist,Candidates(<span class="hljs-built_in">i</span>,:));<br>        <span class="hljs-comment">%----------------------------------</span><br>        <span class="hljs-comment">% 选出100个最好的领域解</span><br>        <span class="hljs-keyword">if</span> <span class="hljs-built_in">i</span>&lt;=BestCandidateNum<br>            BestCandidate(<span class="hljs-built_in">i</span>,<span class="hljs-number">2</span>)=F(<span class="hljs-built_in">i</span>);<br>            BestCandidate(<span class="hljs-built_in">i</span>,<span class="hljs-number">1</span>)=<span class="hljs-built_in">i</span>;<br>            BestCandidate(<span class="hljs-built_in">i</span>,<span class="hljs-number">3</span>)=S0(A(<span class="hljs-built_in">i</span>,<span class="hljs-number">1</span>));<br>            BestCandidate(<span class="hljs-built_in">i</span>,<span class="hljs-number">4</span>)=S0(A(<span class="hljs-built_in">i</span>,<span class="hljs-number">2</span>));<br>        <span class="hljs-keyword">else</span><br>            <span class="hljs-keyword">for</span> <span class="hljs-built_in">j</span>=<span class="hljs-number">1</span>:BestCandidateNum<br>                <span class="hljs-keyword">if</span> F(<span class="hljs-built_in">i</span>)&lt;BestCandidate(<span class="hljs-built_in">j</span>,<span class="hljs-number">2</span>)<br>                    BestCandidate(<span class="hljs-built_in">j</span>,<span class="hljs-number">2</span>)=F(<span class="hljs-built_in">i</span>);<br>                    BestCandidate(<span class="hljs-built_in">j</span>,<span class="hljs-number">1</span>)=<span class="hljs-built_in">i</span>;<br>                    BestCandidate(<span class="hljs-built_in">j</span>,<span class="hljs-number">3</span>)=S0(A(<span class="hljs-built_in">i</span>,<span class="hljs-number">1</span>));<br>                    BestCandidate(<span class="hljs-built_in">j</span>,<span class="hljs-number">4</span>)=S0(A(<span class="hljs-built_in">i</span>,<span class="hljs-number">2</span>));<br>                    <span class="hljs-keyword">break</span>;<br>                <span class="hljs-keyword">end</span><br>            <span class="hljs-keyword">end</span><br>        <span class="hljs-keyword">end</span><br>        <span class="hljs-comment">%----------------------------------</span><br>    <span class="hljs-keyword">end</span><br>    <span class="hljs-comment">% 对BestCandidate排序</span><br>    [JL,Index]=<span class="hljs-built_in">sort</span>(BestCandidate(:,<span class="hljs-number">2</span>)); <span class="hljs-comment">% JL是排序后的向量（用不到），index是JL中每一项对应于BestCandidate(:,2)中项的索引,排序是按升序进行的。</span><br>    SBest=BestCandidate(Index,:);<br>    BestCandidate=SBest;                 <span class="hljs-comment">% 此时的BestCandidate是按第二列路径长度升序排列的</span><br>    <span class="hljs-comment">%% 特赦准则是否满足，更新禁忌表</span><br>    <span class="hljs-comment">% 此时BestCandidate(1,1)存储的i下标代表Candidates中最短路径对应的行下标</span><br>    <span class="hljs-comment">%% Y</span><br>    <span class="hljs-keyword">if</span> BestCandidate(<span class="hljs-number">1</span>,<span class="hljs-number">2</span>)&lt;BestL<br>        BestL=BestCandidate(<span class="hljs-number">1</span>,<span class="hljs-number">2</span>);<br>        <span class="hljs-comment">% 当前解（路经集合）变成候选集合的第BestCandidate(1,1)行，这一行最小</span><br>        S0=Candidates(BestCandidate(<span class="hljs-number">1</span>,<span class="hljs-number">1</span>),:);<br>        BSF=S0;  <br>        <span class="hljs-keyword">for</span> m=<span class="hljs-number">1</span>:CityNum<br>            <span class="hljs-keyword">for</span> n=<span class="hljs-number">1</span>:CityNum<br>                <span class="hljs-keyword">if</span> TabuList(m,n)~=<span class="hljs-number">0</span><br>                    TabuList(m,n)=TabuList(m,n)<span class="hljs-number">-1</span>;                         <span class="hljs-comment">% 更新禁忌表，禁忌长度减1</span><br>                <span class="hljs-keyword">end</span><br>            <span class="hljs-keyword">end</span><br>        <span class="hljs-keyword">end</span><br>        TabuList(BestCandidate(<span class="hljs-number">1</span>,<span class="hljs-number">3</span>),BestCandidate(<span class="hljs-number">1</span>,<span class="hljs-number">4</span>))=TabuLength;        <span class="hljs-comment">% 更新禁忌表，设置当前解的禁忌长度</span><br>    <span class="hljs-comment">%% N</span><br>    <span class="hljs-comment">% 此时没有候选解比当前解更优</span><br>    <span class="hljs-keyword">else</span> <br>        <span class="hljs-keyword">for</span> <span class="hljs-built_in">i</span>=<span class="hljs-number">1</span>:BestCandidateNum<br>            <span class="hljs-keyword">if</span>  TabuList(BestCandidate(<span class="hljs-built_in">i</span>,<span class="hljs-number">3</span>),BestCandidate(<span class="hljs-built_in">i</span>,<span class="hljs-number">4</span>))==<span class="hljs-number">0</span>         <span class="hljs-comment">% 如果已经解禁</span><br>                S0=Candidates(BestCandidate(<span class="hljs-built_in">i</span>,<span class="hljs-number">1</span>),:);<br>                <span class="hljs-keyword">for</span> m=<span class="hljs-number">1</span>:CityNum<br>                    <span class="hljs-keyword">for</span> n=<span class="hljs-number">1</span>:CityNum<br>                        <span class="hljs-keyword">if</span> TabuList(m,n)~=<span class="hljs-number">0</span><br>                            TabuList(m,n)=TabuList(m,n)<span class="hljs-number">-1</span>;                 <span class="hljs-comment">% 更新禁忌表,禁忌长度减1</span><br>                        <span class="hljs-keyword">end</span><br>                    <span class="hljs-keyword">end</span><br>                <span class="hljs-keyword">end</span><br>                TabuList(BestCandidate(<span class="hljs-built_in">i</span>,<span class="hljs-number">3</span>),BestCandidate(<span class="hljs-built_in">i</span>,<span class="hljs-number">4</span>))=TabuLength;<span class="hljs-comment">% 更新禁忌表,设置当前解的禁忌长度</span><br>                <span class="hljs-keyword">break</span>;                                                     <span class="hljs-comment">% 找到第一个非禁忌的最好的候选解作为当前解，退出for循环</span><br>            <span class="hljs-keyword">end</span><br>        <span class="hljs-keyword">end</span><br>    <span class="hljs-keyword">end</span><br>    <span class="hljs-comment">% 更新当前最好的解适配值，也就是当前最短路径的长度</span><br>    <span class="hljs-comment">% BestCandidate(1,2)&lt;BestL时更新，否则不更新，放在这里是为了方便后面画适应度曲线用</span><br>    ArrBestL(p)=BestL;<br>    <span class="hljs-comment">%% 每次迭代都画出最好的路径</span><br>    <span class="hljs-keyword">for</span> <span class="hljs-built_in">i</span>=<span class="hljs-number">1</span>:CityNum<span class="hljs-number">-1</span><br>        <span class="hljs-built_in">plot</span>([Clist(BSF(<span class="hljs-built_in">i</span>),<span class="hljs-number">1</span>),Clist(BSF(<span class="hljs-built_in">i</span>+<span class="hljs-number">1</span>),<span class="hljs-number">1</span>)],[Clist(BSF(<span class="hljs-built_in">i</span>),<span class="hljs-number">2</span>),Clist(BSF(<span class="hljs-built_in">i</span>+<span class="hljs-number">1</span>),<span class="hljs-number">2</span>)],<span class="hljs-string">&#x27;bo-&#x27;</span>);    <span class="hljs-comment">% 画出两点的连线</span><br>        <span class="hljs-built_in">hold</span> on;<br>    <span class="hljs-keyword">end</span><br>    <span class="hljs-built_in">plot</span>([Clist(BSF(CityNum),<span class="hljs-number">1</span>),Clist(BSF(<span class="hljs-number">1</span>),<span class="hljs-number">1</span>)],[Clist(BSF(CityNum),<span class="hljs-number">2</span>),Clist(BSF(<span class="hljs-number">1</span>),<span class="hljs-number">2</span>)],<span class="hljs-string">&#x27;ro-&#x27;</span>);<span class="hljs-comment">% 画出最后一点与出发点的连线（红色）</span><br>    title([<span class="hljs-string">&#x27;迭代次数:&#x27;</span>,int2str(p),<span class="hljs-string">&#x27; 优化最短距离:&#x27;</span>,num2str(BestL)]);<br>    <span class="hljs-built_in">hold</span> off;<br>    pause(<span class="hljs-number">0.005</span>);<br>    <span class="hljs-keyword">if</span> get(stop,<span class="hljs-string">&#x27;value&#x27;</span>)==<span class="hljs-number">1</span><br>        <span class="hljs-keyword">break</span>;<br>    <span class="hljs-keyword">end</span><br>    <br>    p=p+<span class="hljs-number">1</span>;                                                                 <span class="hljs-comment">% 迭代次数加1</span><br><span class="hljs-keyword">end</span><br><span class="hljs-comment">%% </span><br>toc;                                         <span class="hljs-comment">% 用来保存完成时间</span><br>BestShortcut=BSF;                            <span class="hljs-comment">% 最佳路线</span><br>theMinDistance=BestL;                        <span class="hljs-comment">% 最佳路线长度</span><br>set(stop,<span class="hljs-string">&#x27;style&#x27;</span>,<span class="hljs-string">&#x27;pushbutton&#x27;</span>,<span class="hljs-string">&#x27;string&#x27;</span>,<span class="hljs-string">&#x27;close&#x27;</span>, <span class="hljs-string">&#x27;callback&#x27;</span>,<span class="hljs-string">&#x27;close(gcf)&#x27;</span>);<br><span class="hljs-comment">%% 画适应度进化曲线</span><br><span class="hljs-built_in">figure</span>(<span class="hljs-number">2</span>);<br><span class="hljs-built_in">plot</span>(ArrBestL,<span class="hljs-string">&#x27;b&#x27;</span>);<br>xlabel(<span class="hljs-string">&#x27;迭代次数&#x27;</span>);<br>ylabel(<span class="hljs-string">&#x27;目标函数值&#x27;</span>);<br>title(<span class="hljs-string">&#x27;适应度进化曲线&#x27;</span>);<br>grid;<br><span class="hljs-built_in">hold</span> on;<br><span class="hljs-comment">%% 运行时间</span><br><span class="hljs-comment">% figure(3)</span><br><span class="hljs-comment">% plot(toc-tic,&#x27;b&#x27;);</span><br><span class="hljs-comment">% grid;</span><br><span class="hljs-comment">% title(&#x27;运行时间&#x27;);</span><br><span class="hljs-comment">% legend(&#x27;Best So Far&#x27;,&#x27;当前解&#x27;);</span><br><br><span class="hljs-comment">% 计算适配值函数，即路径的长度</span><br><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">F</span>=<span class="hljs-title">DistanceOfS</span><span class="hljs-params">(dislist,s)</span>   </span><br>DistanV=<span class="hljs-number">0</span>;<br>n=<span class="hljs-built_in">size</span>(s,<span class="hljs-number">2</span>);<br><span class="hljs-keyword">for</span> <span class="hljs-built_in">i</span>=<span class="hljs-number">1</span>:(n<span class="hljs-number">-1</span>)<br>    DistanV=DistanV+dislist(s(<span class="hljs-built_in">i</span>),s(<span class="hljs-built_in">i</span>+<span class="hljs-number">1</span>));<br><span class="hljs-keyword">end</span><br>    DistanV=DistanV+dislist(s(n),s(<span class="hljs-number">1</span>));      <br>F=DistanV;<br></code></pre></td></tr></table></figure>
+
+
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/%E6%99%BA%E8%83%BD%E4%BC%98%E5%8C%96%E7%AE%97%E6%B3%95/">智能优化算法</a>
+                    
+                      <a class="hover-with-bg" href="/tags/%E7%A6%81%E5%BF%8C%E6%90%9C%E7%B4%A2%E7%AE%97%E6%B3%95/">禁忌搜索算法</a>
+                    
+                      <a class="hover-with-bg" href="/tags/TS/">TS</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2021/06/23/%E9%81%97%E4%BC%A0%E7%AE%97%E6%B3%95/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">遗传算法</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2021/06/06/%E7%B2%92%E5%AD%90%E7%BE%A4%E7%AE%97%E6%B3%95/">
+                        <span class="hidden-mobile">粒子群算法</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments" lazyload>
+                
+                  
+                
+                
+  <div id="valine"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#valine', function() {
+      Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js', function() {
+        var options = Object.assign(
+          {"appId":"UwDKqUElmwiqmEsyCGkmI5CL-gzGzoHsz","appKey":"yTYBX4h1smIVUPEYMKU2UuxT","placeholder":"说点什么","path":"window.location.pathname","avatar":"retro","meta":["nick","mail","link"],"pageSize":10,"lang":"zh-CN","highlight":false,"recordIP":false,"serverURLs":"","emojiCDN":null,"emojiMaps":null,"enableQQ":false,"requiredFields":[]},
+          {
+            el: "#valine",
+            path: window.location.pathname
+          }
+        )
+        new Valine(options);
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Copyright</span></a> <i class="iconfont "></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>©竹子</span></a> 
+  </div>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- LeanCloud 统计PV -->
+        <span id="leancloud-site-pv-container" style="display: none">
+            总访问量 
+            <span id="leancloud-site-pv"></span>
+             次
+          </span>
+      
+      
+        <!-- LeanCloud 统计UV -->
+        <span id="leancloud-site-uv-container" style="display: none">
+            总访客数 
+            <span id="leancloud-site-uv"></span>
+             人
+          </span>
+      
+
+    
+  </div>
+
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+  <script defer src="/js/leancloud.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    <!-- Baidu Analytics -->
+    <script defer>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?a8d519dd5b8eab3da599e5e777a7e2e2";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>
